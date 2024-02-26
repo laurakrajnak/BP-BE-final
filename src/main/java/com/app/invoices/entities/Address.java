@@ -3,6 +3,8 @@ package com.app.invoices.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Data
 @Getter
 @Setter
@@ -14,14 +16,11 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    private UUID identifier;
+    private Long version;
     private String country;
-
     private String city;
-
-    private String postal_code;
-
+    private String postalCode;
     private String street;
-
-    private Integer house_number;
+    private Integer houseNumber;
 }

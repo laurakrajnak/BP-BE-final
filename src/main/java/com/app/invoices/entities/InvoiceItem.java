@@ -9,11 +9,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "item")
-public class Item {
+@Table(name = "invoice_item")
+public class InvoiceItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-
+    private Long invoiceId;
+    private String name;
+    private String price;
+    private String quantity;
 }
