@@ -14,13 +14,20 @@ import java.time.ZonedDateTime;
 @Table(name = "invoice")
 public class Invoice {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long serialNumber;
-    private Long userId;
-    private Long issuerId;
-    private Long recipientId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User userId;
+    @ManyToOne
+    @JoinColumn(name = "issuer_id")
+    private Contact issuerId;
+    @ManyToOne
+    @JoinColumn(name = "recipient_id")
+    private Contact recipientId;
     private ZonedDateTime date;
     private Double price;
     private Double vat;
+    private Boolean isDeleted;
 }

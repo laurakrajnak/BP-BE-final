@@ -1,23 +1,33 @@
 package com.app.invoices.controller.response;
 
+import com.app.invoices.entities.Contact;
 import com.app.invoices.entities.Invoice;
+import com.app.invoices.entities.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.ZonedDateTime;
 
 public class InvoiceResponse {
-        private Long id;
+    @JsonProperty("id")
+    private Long id;
 
-        private Long serialNumber;
+    @JsonProperty("serialNumber")
+    private Long serialNumber;
 
-        private Long userId;
+    @JsonProperty("userId")
+    private User userId;
 
-        private Long issuerId;
+    @JsonProperty("issuerId")
+    private Contact issuerId;
 
-        private Long recipientId;
+    @JsonProperty("recipientId")
+    private Contact recipientId;
 
-        private ZonedDateTime date;
+    @JsonProperty("date")
+    private ZonedDateTime date;
 
-        private Long cartId;
+    @JsonProperty("cartId")
+    private Long cartId;
 
     public InvoiceResponse(Invoice invoice) {
         this.id = invoice.getId();
@@ -26,6 +36,5 @@ public class InvoiceResponse {
         this.issuerId = invoice.getIssuerId();
         this.recipientId = invoice.getRecipientId();
         this.date = invoice.getDate();
-        //ma tu byt cart?
     }
 }

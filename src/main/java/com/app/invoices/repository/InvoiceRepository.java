@@ -7,24 +7,25 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
-    default Invoice findInvoiceById(Long id) {
-        return null;
+    default Optional<Invoice> findInvoiceById(Long id) {
+        return findById(id);
     }
 
     @Override
-    public default List findAll(Example example) {
+    default List findAll(Example example) {
         return Collections.emptyList();
     }
 
     @Override
-    public default List findAll(Example example, Sort sort) {
+    default List findAll(Example example, Sort sort) {
         return Collections.emptyList();
     }
 
     @Override
-    public default void flush() {
+    default void flush() {
 
     }
 }

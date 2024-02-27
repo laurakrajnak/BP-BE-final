@@ -8,5 +8,5 @@ spring:
     password: postgres
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: update #can lead to data loss in production
     show-sql: true

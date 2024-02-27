@@ -12,9 +12,11 @@ import lombok.*;
 @Table(name = "app_user")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long contactId;
+    @ManyToOne
+    @JoinColumn(name = "contact_id")
+    private Contact contactId;
     private String email;
     private String login;
 

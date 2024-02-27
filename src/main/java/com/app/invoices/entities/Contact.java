@@ -3,8 +3,6 @@ package com.app.invoices.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.UUID;
-
 @Data
 @Getter
 @Setter
@@ -14,15 +12,16 @@ import java.util.UUID;
 @Table(name = "contact")
 public class Contact {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private UUID identifier;
-    private Long version;
     private Long userId;
     private String name;
-    private Integer addressId;
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address addressId;
     private String registrationalId;
     private String taxId;
     private String vatId;
     private AccountType accountType;
+    private Boolean isDeleted;
 }

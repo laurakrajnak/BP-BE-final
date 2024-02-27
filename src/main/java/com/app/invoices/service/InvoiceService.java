@@ -17,10 +17,8 @@ public class InvoiceService {
     public Invoice createInvoice(Invoice invoice) { return this.repository.save(invoice); }
 
     public Invoice getInvoice(long id) throws ChangeSetPersister.NotFoundException {
-        if (this.repository.findInvoiceById(id) == null) {
-            throw new ChangeSetPersister.NotFoundException();
-        }
-        return this.repository.findInvoiceById(id);
+        return this.repository.findInvoiceById(id)
+                .orElseThrow(ChangeSetPersister.NotFoundException::new);
     }
 
     public void deleteInvoice(long id) throws ChangeSetPersister.NotFoundException {
@@ -28,7 +26,7 @@ public class InvoiceService {
     }
 
     public Invoice addProductToInvoice(long id, Invoice body) {
-        Invoice invoice = this.repository.findInvoiceById(id);
+        //Invoice invoice = this.repository.findInvoiceById(id);
 //        Product product = this.productService.getProduct(body.getProductId());
 //        if (product == null || invoice == null) {
 //            throw new NotFoundException();
@@ -44,7 +42,8 @@ public class InvoiceService {
 //        }
 //        product.decreaseAmount(body.getAmount());
 //        this.productInInvoiceRepository.save(productInInvoice);
-        return this.repository.save(invoice);
+        //return this.repository.save(invoice);
+        return null;
     }
 
     public boolean containsProductId(List<Invoice> productList, Long productId) {

@@ -12,9 +12,11 @@ import lombok.*;
 @Table(name = "invoice_item")
 public class InvoiceItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long invoiceId;
+    @ManyToOne
+    @JoinColumn(name = "invoice_id")
+    private Invoice invoiceId;
     private String name;
     private String price;
     private String quantity;
