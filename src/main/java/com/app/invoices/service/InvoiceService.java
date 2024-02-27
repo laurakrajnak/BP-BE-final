@@ -21,6 +21,10 @@ public class InvoiceService {
                 .orElseThrow(ChangeSetPersister.NotFoundException::new);
     }
 
+    public List<Invoice> getListOfAllInvoices() {
+        return this.repository.findAll();
+    }
+
     public void deleteInvoice(long id) throws ChangeSetPersister.NotFoundException {
         this.repository.delete(this.getInvoice(id));
     }

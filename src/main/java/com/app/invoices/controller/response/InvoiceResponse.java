@@ -1,8 +1,6 @@
 package com.app.invoices.controller.response;
 
-import com.app.invoices.entities.Contact;
 import com.app.invoices.entities.Invoice;
-import com.app.invoices.entities.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.ZonedDateTime;
@@ -14,27 +12,20 @@ public class InvoiceResponse {
     @JsonProperty("serialNumber")
     private Long serialNumber;
 
-    @JsonProperty("userId")
-    private User userId;
+    @JsonProperty("issuer")
+    private ContactResponse issuer;
 
-    @JsonProperty("issuerId")
-    private Contact issuerId;
-
-    @JsonProperty("recipientId")
-    private Contact recipientId;
+    @JsonProperty("recipient")
+    private ContactResponse recipient;
 
     @JsonProperty("date")
     private ZonedDateTime date;
 
-    @JsonProperty("cartId")
-    private Long cartId;
-
     public InvoiceResponse(Invoice invoice) {
         this.id = invoice.getId();
         this.serialNumber = invoice.getSerialNumber();
-        this.userId = invoice.getUserId();
-        this.issuerId = invoice.getIssuerId();
-        this.recipientId = invoice.getRecipientId();
+        this.issuer = new ContactResponse(invoice.getIssuerId());
+        this.recipient = new ContactResponse(invoice.getRecipientId());
         this.date = invoice.getDate();
     }
 }

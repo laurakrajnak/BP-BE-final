@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/invoice")
 public class InvoiceController {
@@ -25,6 +27,15 @@ public class InvoiceController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public InvoiceResponse getInvoice(@PathVariable("id") long id) throws ChangeSetPersister.NotFoundException {
         return new InvoiceResponse(this.service.getInvoice(id));
+    }
+
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<InvoiceResponse> getInvoice() {
+        List<Invoice> invoices = this.service.getListOfAllInvoices();
+
+        return invoices.stream()
+            .map(InvoiceResponse::new)
+            .toList();
     }
 
     @DeleteMapping(value = "/{id}")

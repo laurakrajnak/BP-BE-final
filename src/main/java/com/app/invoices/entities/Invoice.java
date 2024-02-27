@@ -18,8 +18,8 @@ public class Invoice {
     private Long id;
     private Long serialNumber;
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User userId;
+    @JoinColumn(name = "account_id")
+    private Account accountId;
     @ManyToOne
     @JoinColumn(name = "issuer_id")
     private Contact issuerId;
