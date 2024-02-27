@@ -14,17 +14,28 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
     }
 
     @Override
-    public default List findAll(Example example) {
+    default List findAll(Example example) {
         return Collections.emptyList();
     }
 
     @Override
-    public default List findAll(Example example, Sort sort) {
+    default List findAll(Example example, Sort sort) {
         return Collections.emptyList();
     }
 
     @Override
-    public default void flush() {
+    default void flush() {
 
+    }
+
+    default Contact changeContact(Contact changedContact) {
+        Contact oldContact = findById(changedContact.getId()).orElseThrow();
+        oldContact.setIsDeleted(true);
+        save(oldContact);
+
+        Contact newContact = new Contact(changedContact);
+        save(newContact);
+        //TODO also update address table
+        return newContact;
     }
 }

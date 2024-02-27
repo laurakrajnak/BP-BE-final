@@ -1,5 +1,6 @@
 package com.app.invoices.controller;
 
+import com.app.invoices.controller.request.CreateContactRequest;
 import com.app.invoices.controller.response.OperationFinishedResponse;
 import com.app.invoices.entities.*;
 import com.app.invoices.service.ContactService;
@@ -16,7 +17,12 @@ public class ContactController {
     private ContactService service;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createContact(@RequestBody Contact body) {
+    public ResponseEntity createContact(@RequestBody CreateContactRequest body) {
         return new ResponseEntity<>(new OperationFinishedResponse(this.service.createContact(body).getId()), HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/change", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity changeContact(@RequestBody Contact body) {   // TODO rename to updateContact
+        return new ResponseEntity<>(new OperationFinishedResponse(this.service.changeContact(body).getId()), HttpStatus.CREATED);
     }
 }
