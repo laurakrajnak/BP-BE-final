@@ -14,6 +14,6 @@ public class ContactService {
 
     public Contact createContact(CreateContactRequest contactRequest) { return this.repository.save(new Contact(contactRequest)); }
 
-    public Contact changeContact(Contact contact) { return this.repository.changeContact(contact); }
+    public Contact updateContact(Contact contact) { return this.repository.updateContact(contact); }
 }
 

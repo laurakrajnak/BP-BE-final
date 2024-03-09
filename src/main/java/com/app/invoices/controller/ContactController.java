@@ -21,8 +21,8 @@ public class ContactController {
         return new ResponseEntity<>(new OperationFinishedResponse(this.service.createContact(body).getId()), HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/change", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity changeContact(@RequestBody Contact body) {   // TODO rename to updateContact
-        return new ResponseEntity<>(new OperationFinishedResponse(this.service.changeContact(body).getId()), HttpStatus.CREATED);
+    @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateContact(@RequestBody Contact body) {
+        return new ResponseEntity<>(new OperationFinishedResponse(this.service.updateContact(body).getId()), HttpStatus.CREATED);
     }
 }

@@ -28,12 +28,12 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
 
     }
 
-    default Contact changeContact(Contact changedContact) {
-        Contact oldContact = findById(changedContact.getId()).orElseThrow();
+    default Contact updateContact(Contact updatedContact) {
+        Contact oldContact = findById(updatedContact.getId()).orElseThrow();
         oldContact.setIsDeleted(true);
         save(oldContact);
 
-        Contact newContact = new Contact(changedContact);
+        Contact newContact = new Contact(updatedContact);
         save(newContact);
         //TODO also update address table
         return newContact;
