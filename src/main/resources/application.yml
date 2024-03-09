@@ -8,5 +8,10 @@ spring:
     password: postgres
   jpa:
     hibernate:
-      ddl-auto: update #can lead to data loss in production
+      ddl-auto: none  # Disable Hibernate DDL auto
     show-sql: true
+
+# Flyway Configuration
+#flyway:
+ # enabled: true
+  #locations: classpath:db/migration
