@@ -2,9 +2,11 @@ package com.app.invoices.controller.response;
 
 import com.app.invoices.entities.Invoice;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.time.ZonedDateTime;
 
+@Getter
 public class InvoiceResponse {
     @JsonProperty("id")
     private Long id;

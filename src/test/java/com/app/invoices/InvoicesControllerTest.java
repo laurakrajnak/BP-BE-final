@@ -1,4 +1,4 @@
-package com.app.invoicesbe;
+package com.app.invoices;
 
 import org.junit.jupiter.api.Test;
 
