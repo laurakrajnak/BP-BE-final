@@ -11,7 +11,7 @@ public class DatabasePopulatorTestExecutionListener implements TestExecutionList
         // Execute your populator logic before the test class
         // You can obtain the populator bean from the application context
         // and call the necessary methods to populate the database
-        DatabasePopulator populator = testContext.getApplicationContext().getBean(DatabasePopulator.class);
+        //DatabasePopulator populator = testContext.getApplicationContext().getBean(DatabasePopulator.class);
         //populator.afterPropertiesSet(testContext.getApplicationContext().getEnvironment());
     }
 

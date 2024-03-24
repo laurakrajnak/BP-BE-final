@@ -7,18 +7,27 @@ import com.app.invoices.entities.Contact;
 import com.app.invoices.entities.Invoice;
 import com.app.invoices.populator.DatabasePopulatorTestExecutionListener;
 import com.app.invoices.repository.InvoiceRepository;
+import com.app.invoices.util.TestTokenGenerator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.io.ByteArrayInputStream;
 import java.time.ZonedDateTime;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -45,6 +54,20 @@ class InvoiceControllerIT {
     public void cleanup() {
         // Add any cleanup logic here, like deleting test data from the database
         invoiceRepository.deleteAll();
+    }
+
+    @Test
+    void createInvoice() throws Exception {
+        //String token = TestTokenGenerator.getEncodedJwt(roles);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        //headers.setBearerAuth(token);
+
+        mockMvc.perform(multipart("/invoice")
+                        .file(new MockMultipartFile("file", "test.txt", MediaType.APPLICATION_OCTET_STREAM_VALUE, "test".getBytes()))
+                        .headers(headers))
+                .andExpect(status().isOk());
     }
 
     @Test
