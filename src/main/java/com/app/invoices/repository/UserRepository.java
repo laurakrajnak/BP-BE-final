@@ -2,6 +2,7 @@ package com.app.invoices.repository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import com.app.invoices.entities.User;
 import org.springframework.data.domain.Example;
@@ -12,6 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     default User findInvoiceById(Long id) {
         return null;
     }
+
+    Optional<User> findByEmail(String email);
 
     @Override
     public default List findAll(Example example) {
