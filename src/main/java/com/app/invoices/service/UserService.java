@@ -13,4 +13,3 @@ public class UserService {
 
     public User createUser(User user) { return this.repository.save(user); }
 }
-
