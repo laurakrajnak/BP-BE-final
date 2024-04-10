@@ -19,5 +19,4 @@ public class Account {
     @JoinColumn(name = "user_id")
     private User userId;
     private String name;
-    private Boolean isDeleted;
 }
