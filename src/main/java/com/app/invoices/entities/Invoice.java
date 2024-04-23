@@ -29,5 +29,4 @@ public class Invoice {
     private ZonedDateTime date;
     private Double price;
     private Double vat;
-    private Boolean isDeleted;
 }

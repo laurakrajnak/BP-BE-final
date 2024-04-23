@@ -1,5 +1,6 @@
 package com.app.invoices.controller;
 
+import com.app.invoices.controller.response.AuthResponse;
 import com.app.invoices.service.AuthService;
 import com.app.invoices.service.TokenService;
 import com.app.invoices.controller.response.OperationFinishedResponse;
@@ -16,17 +17,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
-    private AuthService authService;
+    private AuthService service;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
@@ -47,16 +45,20 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login")
-    public String loginUser(@RequestBody User user) throws AuthenticationException {
+    public ResponseEntity<AuthResponse> loginUser(@RequestBody User user) throws AuthenticationException {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            logger.info("User {} authenticated successfully", user.getEmail());
-            return tokenService.generateToken(authentication);
+
+            Long userId = service.getUserByEmail(user.getEmail());
+            String token = tokenService.generateToken(authentication);
+
+            AuthResponse authResponse = new AuthResponse(token, userId);
+            return ResponseEntity.ok(authResponse);
+
         } catch (AuthenticationException e) {
-            logger.error("Authentication failed for user {}", user.getEmail(), e);
-            throw e;
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
@@ -66,7 +68,7 @@ public class AuthController {
             // Logging user registration
             logger.info("Registering new user with email {}", body.getEmail());
 
-            return new ResponseEntity<>(new OperationFinishedResponse(this.authService.createUser(body).getId()), HttpStatus.OK);
+            return new ResponseEntity<>(new OperationFinishedResponse(this.service.createUser(body).getId()), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             logger.error("Failed to register user with email {}", body.getEmail(), e);
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -76,9 +78,10 @@ public class AuthController {
     @PostMapping(value = "/role", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createRole(@RequestBody Role body) {
         try {
-            return new ResponseEntity<>(new OperationFinishedResponse(this.authService.createRole(body).getId()), HttpStatus.CREATED);
+            return new ResponseEntity<>(new OperationFinishedResponse(this.service.createRole(body).getId()), HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             logger.error("Failed to register user with email {}", body.getName(), e);
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }    }
+        }
+    }
 }

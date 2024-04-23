@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 @Service
 
 public class AuthService {
@@ -39,5 +41,10 @@ public class AuthService {
             throw new IllegalArgumentException("Role already exists.");
         }
         return this.roleRepository.save(role);
+    }
+
+    public Long getUserByEmail(String email) {
+        Optional<User> user = this.userRepository.findByEmail(email);
+        return user.map(User::getId).orElse(null);
     }
 }

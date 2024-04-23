@@ -19,5 +19,4 @@ public class Address {
     private String postalCode;
     private String street;
     private Integer houseNumber;
-    private Boolean isDeleted;
 }

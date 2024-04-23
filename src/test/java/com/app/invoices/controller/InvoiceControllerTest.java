@@ -143,7 +143,6 @@ class InvoiceControllerTest {
         address.setPostalCode("12345");
         address.setStreet("Sample Street");
         address.setHouseNumber(42);
-        address.setIsDeleted(false);
         return address;
     }
 }

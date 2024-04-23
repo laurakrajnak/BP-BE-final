@@ -17,8 +17,15 @@ public class AccountService {
 
     @Autowired
     private UserRepository userRepository;
-    public List<Account> getAccounts(String email) {
-        Optional<User> user = this.userRepository.findByEmail(email);
+
+    public Account createAccount(String name, Long userId) {
+        User user = this.userRepository.getReferenceById(userId);
+        Account account = new Account(name, user);
+        return this.repository.save(account);
+    }
+
+    public List<Account> getAccounts(Long userId) {
+        Optional<User> user = this.userRepository.findById(userId);
         return this.repository.findAllByUserId(user);
     }
 }

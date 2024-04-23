@@ -26,7 +26,6 @@ public class Contact {
     private String taxId;
     private String vatId;
     private AccountType accountType;
-    private Boolean isDeleted;
 
     public Contact(Contact oldContact) {
         this.id = null;
@@ -37,7 +36,6 @@ public class Contact {
         this.taxId = oldContact.getTaxId();
         this.vatId = oldContact.getVatId();
         this.accountType = oldContact.getAccountType();
-        this.isDeleted = false;
     }
 
     public Contact(CreateContactRequest oldContact) {
@@ -48,6 +46,5 @@ public class Contact {
         this.taxId = oldContact.getTaxId();
         this.vatId = oldContact.getVatId();
         this.accountType = oldContact.getAccountType();
-        this.isDeleted = false;
     }
 }

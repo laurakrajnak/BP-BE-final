@@ -19,4 +19,9 @@ public class UserController {
     public ResponseEntity createUser(@RequestBody User body) {
         return new ResponseEntity<>(new OperationFinishedResponse(this.service.createUser(body).getId()), HttpStatus.CREATED);
     }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public Long getUserByEmail(@RequestParam("email") String email) {
+        return this.service.getUserByEmail(email);
+    }
 }
