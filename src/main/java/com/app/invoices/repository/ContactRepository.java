@@ -1,5 +1,6 @@
 package com.app.invoices.repository;
 
+import com.app.invoices.entities.Account;
 import com.app.invoices.entities.Contact;
 
 import java.util.Collections;
@@ -12,6 +13,8 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
     default Contact findInvoiceById(Long id) {
         return null;
     }
+
+    List<Contact> findByAccountId(Account accountId);
 
     @Override
     default List findAll(Example example) {
