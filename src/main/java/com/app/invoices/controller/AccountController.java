@@ -24,6 +24,13 @@ public class AccountController {
         return new ResponseEntity<>(new OperationFinishedResponse(this.service.createAccount(name, userId).getId()), HttpStatus.CREATED);
     }
 
+    @GetMapping(value = "/default", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccountResponse> getDefaultAccount(@RequestParam("email") String email) {
+        Account account = this.service.getDefaultAccount(email);
+        AccountResponse accountResponse = new AccountResponse(account);
+        return ResponseEntity.ok(accountResponse);
+    }
+
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<AccountResponse> getAccounts(@RequestParam("userId") Long userId) {
         List<Account> accounts = this.service.getAccounts(userId);

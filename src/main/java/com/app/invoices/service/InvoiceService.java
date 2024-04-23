@@ -1,6 +1,7 @@
 package com.app.invoices.service;
 
 import com.app.invoices.entities.*;
+import com.app.invoices.repository.AccountRepository;
 import com.app.invoices.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -14,6 +15,9 @@ public class InvoiceService {
     @Autowired
     private InvoiceRepository repository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
     public Invoice createInvoice(Invoice invoice) { return this.repository.save(invoice); }
 
     public Invoice getInvoice(long id) throws ChangeSetPersister.NotFoundException {
@@ -21,8 +25,9 @@ public class InvoiceService {
                 .orElseThrow(ChangeSetPersister.NotFoundException::new);
     }
 
-    public List<Invoice> getListOfAllInvoices() {
-        return this.repository.findAll();
+    public List<Invoice> getListOfAllInvoices(Long accountId) {
+        Account account = this.accountRepository.getReferenceById(accountId);
+        return repository.findByAccountId(account);
     }
 
     public void deleteInvoice(long id) throws ChangeSetPersister.NotFoundException {

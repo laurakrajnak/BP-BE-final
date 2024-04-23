@@ -4,6 +4,8 @@ import com.app.invoices.entities.Account;
 import com.app.invoices.entities.User;
 import com.app.invoices.repository.AccountRepository;
 import com.app.invoices.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import java.util.Optional;
 
 @Service
 public class AccountService {
+    private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
     @Autowired
     private AccountRepository repository;
 
@@ -23,6 +26,14 @@ public class AccountService {
         Account account = new Account(name, user);
         return this.repository.save(account);
     }
+
+    public Account getDefaultAccount(String email) {
+        Optional<User> user = this.userRepository.findByEmail(email);
+        logger.info("email {}", email);
+        logger.info("user {}", user);
+        return this.repository.findAllByUserId(user).get(0);
+    }
+
 
     public List<Account> getAccounts(Long userId) {
         Optional<User> user = this.userRepository.findById(userId);

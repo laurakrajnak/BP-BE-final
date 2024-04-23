@@ -1,8 +1,10 @@
 package com.app.invoices.repository;
 
+import com.app.invoices.entities.Account;
 import com.app.invoices.entities.Invoice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
@@ -24,4 +26,6 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     default void flush() {
 
     }
+
+    List<Invoice> findByAccountId(Account accountId);
 }

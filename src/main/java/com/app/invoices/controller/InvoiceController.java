@@ -29,9 +29,9 @@ public class InvoiceController {
         return new InvoiceResponse(this.service.getInvoice(id));
     }
 
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<InvoiceResponse> getInvoice() {
-        List<Invoice> invoices = this.service.getListOfAllInvoices();
+    @GetMapping(value = "/account/{accountId}/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<InvoiceResponse> getInvoice(@PathVariable Long accountId) {
+        List<Invoice> invoices = this.service.getListOfAllInvoices(accountId);
 
         return invoices.stream()
             .map(InvoiceResponse::new)
