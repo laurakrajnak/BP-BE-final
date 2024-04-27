@@ -1,6 +1,5 @@
 package com.app.invoices.entities;
 
-import com.app.invoices.controller.request.CreateContactRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,13 +37,13 @@ public class Contact {
         this.accountType = oldContact.getAccountType();
     }
 
-    public Contact(CreateContactRequest oldContact) {
-        this.accountId = oldContact.getAccountId();
-        this.name = oldContact.getName();
-        this.addressId = oldContact.getAddressId();
-        this.registrationalId = oldContact.getRegistrationalId();
-        this.taxId = oldContact.getTaxId();
-        this.vatId = oldContact.getVatId();
-        this.accountType = oldContact.getAccountType();
+    public Contact(Account account, String name, Address addressId, String registrationalId, String taxId, String vatId, AccountType accountType) {
+        this.accountId = account;
+        this.name = name;
+        this.addressId = addressId;
+        this.registrationalId = registrationalId;
+        this.taxId = taxId;
+        this.vatId = vatId;
+        this.accountType = accountType;
     }
 }

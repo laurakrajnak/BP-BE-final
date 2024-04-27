@@ -3,6 +3,7 @@ package com.app.invoices.service;
 import com.app.invoices.controller.request.CreateContactRequest;
 import com.app.invoices.entities.*;
 import com.app.invoices.repository.AccountRepository;
+import com.app.invoices.repository.AddressRepository;
 import com.app.invoices.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,32 @@ public class ContactService {
     private ContactRepository repository;
 
     @Autowired
+    private AddressRepository addressRepository;
+
+    @Autowired
     private AccountRepository accountRepository;
 
-    public Contact createContact(CreateContactRequest contactRequest) { return this.repository.save(new Contact(contactRequest)); }
+    public Contact createContact(CreateContactRequest contactRequest) {
+        Address address = new Address(
+                contactRequest.getCountry(),
+                contactRequest.getCity(),
+                contactRequest.getPostalCode(),
+                contactRequest.getStreet(),
+                contactRequest.getHouseNumber());
+        this.addressRepository.save(address);
+
+        Account account = this.accountRepository.getReferenceById(contactRequest.getAccountId());
+
+        Contact contact = new Contact(
+                account,
+                contactRequest.getName(),
+                address,
+                contactRequest.getRegistrationalId(),
+                contactRequest.getTaxId(),
+                contactRequest.getVatId(),
+                contactRequest.getAccountType());
+        return this.repository.save(contact);
+    }
 
     public List<Contact> getListOfAllContacts(Long accountId) {
         Account account = this.accountRepository.getReferenceById(accountId);

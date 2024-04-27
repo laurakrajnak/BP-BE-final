@@ -19,4 +19,12 @@ public class Address {
     private String postalCode;
     private String street;
     private Integer houseNumber;
+
+    public Address(String country, String city, String postalCode, String street, Integer houseNumber) {
+        this.country = country;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.street = street;
+        this.houseNumber = houseNumber;
+    }
 }
