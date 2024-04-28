@@ -5,6 +5,8 @@ import com.app.invoices.entities.Contact;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ContactResponse {
+    @JsonProperty("id")
+    private Long id;
     @JsonProperty("name")
     private String name;
     @JsonProperty("address")
@@ -19,6 +21,7 @@ public class ContactResponse {
     private AccountType accountType;
 
     public ContactResponse(Contact contact) {
+        this.id = contact.getId();
         this.name = contact.getName();
         this.address = new AddressResponse(contact.getAddressId());
         this.registrationalId = contact.getRegistrationalId();
