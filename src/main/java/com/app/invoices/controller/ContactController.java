@@ -32,6 +32,11 @@ public class ContactController {
                 .toList();
     }
 
+  @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ContactResponse getContact(@PathVariable Long id) {
+        return new ContactResponse(this.service.getContactDetail(id));
+    }
+
 //    @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public ResponseEntity updateContact(@RequestBody Contact body) {
 //        return new ResponseEntity<>(new OperationFinishedResponse(this.service.updateContact(body).getId()), HttpStatus.CREATED);

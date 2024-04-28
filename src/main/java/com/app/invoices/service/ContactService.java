@@ -49,6 +49,10 @@ public class ContactService {
         return repository.findByAccountId(account);
     }
 
+    public Contact getContactDetail(Long id) {
+        return repository.getReferenceById(id);
+    }
+
 //    public Contact updateContact(Contact contact) { return this.repository.updateContact(contact); }
 }
 
