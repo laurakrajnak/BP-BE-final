@@ -29,6 +29,11 @@ public class InvoiceController {
         return new InvoiceResponse(this.service.getInvoice(id));
     }
 
+    @DeleteMapping(value = "/{id}")
+    public void deleteInvoice(@PathVariable("id") long id) throws ChangeSetPersister.NotFoundException {
+        this.service.deleteInvoice(id);
+    }
+
     @GetMapping(value = "/account/{accountId}/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<InvoiceResponse> getInvoice(@PathVariable Long accountId) {
         List<Invoice> invoices = this.service.getListOfAllInvoices(accountId);
@@ -36,10 +41,5 @@ public class InvoiceController {
         return invoices.stream()
             .map(InvoiceResponse::new)
             .toList();
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public void deleteInvoice(@PathVariable("id") long id) throws ChangeSetPersister.NotFoundException {
-        this.service.deleteInvoice(id);
     }
 }

@@ -39,4 +39,8 @@ public class AccountService {
         Optional<User> user = this.userRepository.findById(userId);
         return this.repository.findAllByUserId(user);
     }
+
+    public Account getAccountById(Long id) {
+        return this.repository.getReferenceById(id);
+    }
 }

@@ -3,6 +3,7 @@ package com.app.invoices.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Data
 @Getter
@@ -29,4 +30,11 @@ public class Expense {
 
   @Column(name = "updated_at")
   private ZonedDateTime updatedAt;
+
+  public Expense(Account account, String description, Double price) {
+    this.accountId = account;
+    this.description = description;
+    this.price = price;
+    this.createdAt = ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+  }
 }
