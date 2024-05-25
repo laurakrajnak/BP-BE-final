@@ -29,4 +29,9 @@ public class Invoice {
     private ZonedDateTime date;
     private Double price;
     private Double vat;
+    @Column(name = "created_at")
+    private ZonedDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private ZonedDateTime updatedAt;
 }

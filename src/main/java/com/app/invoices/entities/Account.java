@@ -3,11 +3,11 @@ package com.app.invoices.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Entity
 @Table(name = "account")
 public class Account {

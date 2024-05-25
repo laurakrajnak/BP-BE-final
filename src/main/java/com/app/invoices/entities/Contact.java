@@ -3,6 +3,8 @@ package com.app.invoices.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.ZonedDateTime;
+
 @Data
 @Getter
 @Setter
@@ -25,6 +27,12 @@ public class Contact {
     private String taxId;
     private String vatId;
     private AccountType accountType;
+
+    @Column(name = "created_at")
+    private ZonedDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private ZonedDateTime updatedAt;
 
     public Contact(Contact oldContact) {
         this.id = null;
