@@ -3,8 +3,10 @@ package com.app.invoices.service;
 import com.app.invoices.entities.*;
 import com.app.invoices.repository.AccountRepository;
 import com.app.invoices.repository.InvoiceRepository;
+import com.app.invoices.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +20,14 @@ public class InvoiceService {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     public Invoice createInvoice(Invoice invoice) { return this.repository.save(invoice); }
 
-    public Invoice getInvoice(long id) throws ChangeSetPersister.NotFoundException {
-        return this.repository.findInvoiceById(id)
-                .orElseThrow(ChangeSetPersister.NotFoundException::new);
+    public Invoice getInvoice(long id, Authentication auth) {
+        Long userId = jwtUtil.extractUserId(auth);
+        return this.repository.findInvoiceById(id, userId);
     }
 
     public List<Invoice> getListOfAllInvoices(Long accountId) {
@@ -30,8 +35,8 @@ public class InvoiceService {
         return repository.findByAccountId(account);
     }
 
-    public void deleteInvoice(long id) throws ChangeSetPersister.NotFoundException {
-        this.repository.delete(this.getInvoice(id));
+    public void deleteInvoice(long id, Authentication auth) {
+        this.repository.delete(this.getInvoice(id, auth));
     }
 
     public Invoice addProductToInvoice(long id, Invoice body) {

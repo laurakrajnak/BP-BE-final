@@ -19,6 +19,10 @@ public class InvoiceItem {
     @ManyToOne
     @JoinColumn(name = "invoice_id")
     private Invoice invoiceId;
+
+    @ManyToOne // TO DO - chcem tu toto mat?
+    @JoinColumn(name = "account_id")
+    private Account accountId;
     private String name;
     private String price;
     private String quantity;

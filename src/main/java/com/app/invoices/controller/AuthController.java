@@ -31,6 +31,7 @@ public class AuthController {
     private TokenService tokenService;
     private final AuthenticationManager authenticationManager;
 
+    // TO DO - delete if not used
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -75,6 +76,7 @@ public class AuthController {
         }
     }
 
+    // TO DO secure this as it is public because of /auth
     @PostMapping(value = "/role", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createRole(@RequestBody Role body) {
         try {

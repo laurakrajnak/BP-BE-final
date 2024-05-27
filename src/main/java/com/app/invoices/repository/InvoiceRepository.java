@@ -3,29 +3,20 @@ package com.app.invoices.repository;
 import com.app.invoices.entities.Account;
 import com.app.invoices.entities.Invoice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
-    default Optional<Invoice> findInvoiceById(Long id) {
-        return findById(id);
-    }
-
-//    @Override
-//    default List findAll(Example example) {
-//        return Collections.emptyList();
-//    }
-
-//    @Override
-//    default List findAll(Example example, Sort sort) {
-//        return Collections.emptyList();
-//    }
+    @Query(value = "SELECT i.* FROM invoice i " +
+                    "JOIN account a on a.id = i.account_id " +
+                    "WHERE i.id = :id " +
+                    "AND a.user_id = :user_id", nativeQuery = true)
+    Invoice findInvoiceById(@Param("id")Long id, @Param("user_id") Long userId);
 
     @Override
-    default void flush() {
-
-    }
+    default void flush() { }
 
     List<Invoice> findByAccountId(Account accountId);
 }

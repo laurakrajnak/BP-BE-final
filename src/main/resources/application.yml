@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/appdb
     username: postgres
-    password: postgres
+    password: bpLauKra.24
   jpa:
     hibernate:
       ddl-auto: update  # Disable Hibernate DDL auto

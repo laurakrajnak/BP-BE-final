@@ -16,6 +16,10 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne // TO DO - chcem tu toto mat?
+    @JoinColumn(name = "account_id")
+    private Account accountId;
     private String country;
     private String city;
     private String postalCode;
@@ -27,7 +31,8 @@ public class Address {
     @Column(name = "updated_at")
     private ZonedDateTime updatedAt;
 
-    public Address(String country, String city, String postalCode, String street, Integer houseNumber) {
+    public Address(Account account, String country, String city, String postalCode, String street, Integer houseNumber) {
+        this.accountId = account;
         this.country = country;
         this.city = city;
         this.postalCode = postalCode;

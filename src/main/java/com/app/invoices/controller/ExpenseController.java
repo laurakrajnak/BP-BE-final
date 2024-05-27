@@ -1,5 +1,6 @@
 package com.app.invoices.controller;
 
+import com.app.invoices.controller.response.ExpenseResponse;
 import com.app.invoices.controller.response.OperationFinishedResponse;
 import com.app.invoices.entities.*;
 
@@ -26,12 +27,12 @@ public class ExpenseController {
     @Autowired
     private AccountService accountService;
 
+    // TO DO !!! divide this into service and repository
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OperationFinishedResponse> createExpense(
             @RequestPart("expense") String expenseJson,
             @RequestPart("photo") MultipartFile photo) {
 
-        // Convert the expenseJson to Expense object
         ObjectMapper objectMapper = new ObjectMapper();
         ExpenseDTO expenseDTO;
         try {
@@ -40,16 +41,13 @@ public class ExpenseController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        // Retrieve the Account object
         Account account = accountService.getAccountById(expenseDTO.getAccountId());
         if (account == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        // Create Expense object
         Expense expense = new Expense(account, expenseDTO.getDescription(), expenseDTO.getPrice());
 
-        // Process the photo file
         try {
             byte[] photoBytes = photo.getBytes();
             expense.setPhoto(photoBytes);
@@ -57,7 +55,6 @@ public class ExpenseController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        // Save the expense with photo
         Expense savedExpense = service.createExpense(expense);
         return new ResponseEntity<>(new OperationFinishedResponse(savedExpense.getId()), HttpStatus.CREATED);
     }
@@ -73,9 +70,11 @@ public class ExpenseController {
     }
 
     @GetMapping(value = "/account/{accountId}/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Expense> getExpense(@PathVariable Long accountId) {
+    public List<ExpenseResponse> getExpense(@PathVariable Long accountId) {
         List<Expense> expenses = this.service.getListOfAllExpenses(accountId);
 
-        return expenses;
+        return expenses.stream()
+                .map(ExpenseResponse::new)
+                .toList();
     }
 }

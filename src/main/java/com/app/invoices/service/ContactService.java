@@ -23,15 +23,15 @@ public class ContactService {
     private AccountRepository accountRepository;
 
     public Contact createContact(CreateContactRequest contactRequest) {
+        Account account = this.accountRepository.getReferenceById(contactRequest.getAccountId());
         Address address = new Address(
+                account,
                 contactRequest.getCountry(),
                 contactRequest.getCity(),
                 contactRequest.getPostalCode(),
                 contactRequest.getStreet(),
                 contactRequest.getHouseNumber());
         this.addressRepository.save(address);
-
-        Account account = this.accountRepository.getReferenceById(contactRequest.getAccountId());
 
         Contact contact = new Contact(
                 account,
