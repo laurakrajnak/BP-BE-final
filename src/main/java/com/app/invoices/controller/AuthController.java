@@ -1,6 +1,5 @@
 package com.app.invoices.controller;
 
-import com.app.invoices.controller.response.AuthResponse;
 import com.app.invoices.service.AuthService;
 import com.app.invoices.service.TokenService;
 import com.app.invoices.controller.response.OperationFinishedResponse;
@@ -45,18 +44,18 @@ public class AuthController {
         this.tokenService = tokenService;
     }
 
-    @PostMapping(value = "/login")
-    public ResponseEntity<AuthResponse> loginUser(@RequestBody User user) throws AuthenticationException {
+    @GetMapping(value = "/login")
+    public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+                    new UsernamePasswordAuthenticationToken(email, password));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            Long userId = service.getUserByEmail(user.getEmail());
             String token = tokenService.generateToken(authentication);
+            logger.info(token);
 
-            AuthResponse authResponse = new AuthResponse(token, userId);
-            return ResponseEntity.ok(authResponse);
+//            AuthResponse authResponse = new AuthResponse(token);
+            return ResponseEntity.ok(token);
 
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

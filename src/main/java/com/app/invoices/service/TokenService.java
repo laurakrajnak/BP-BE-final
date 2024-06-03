@@ -2,13 +2,12 @@ package com.app.invoices.service;
 
 import com.app.invoices.security.CustomUserDetails;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 
 @Service
 public class TokenService {
@@ -25,10 +24,19 @@ public class TokenService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
-                .expiresAt(now.plus(1, ChronoUnit.DAYS))
-                .subject(userDetails.getUsername())
+                .expiresAt(now.plus(1, ChronoUnit.HOURS))
+                .subject(userDetails.getUserId().toString())
+                .audience(Collections.singletonList("https://665389819a57a57c546c2d70.powersync.journeyapps.com"))
+                .claim("username", userDetails.getUsername())
                 .claim("user_id", userDetails.getUserId())
                 .build();
-        return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+
+        JwsHeader jwsHeader = JwsHeader.with(() -> "RS256")
+                .keyId("0102a64e-258e-4c6f-903c-9c7859adad87")
+                .build();
+
+        JwtEncoderParameters parameters = JwtEncoderParameters.from(jwsHeader, claims);
+
+        return this.encoder.encode(parameters).getTokenValue();
     }
 }

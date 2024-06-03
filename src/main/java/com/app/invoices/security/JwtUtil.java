@@ -9,6 +9,6 @@ public class JwtUtil {
 
     public Long extractUserId(Authentication authentication) {
         Jwt jwt = (Jwt) authentication.getPrincipal();
-        return Long.parseLong(jwt.getClaimAsString("user_id"));
+        return Long.parseLong(jwt.getSubject());
     }
 }

@@ -1,11 +1,8 @@
 package com.app.invoices.security;
 
-import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,15 +17,27 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.nimbusds.jose.jwk.JWKSelector;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import com.nimbusds.jose.proc.SecurityContext;
+import com.nimbusds.jose.util.DefaultResourceRetriever;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.KeyFactory;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Base64;
 import java.util.List;
 
 @Configuration
@@ -36,9 +45,11 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private RSAKey rsaKey;
-    private JwtAuthEntryPoint jwtAuthEntryPoint;
-    private CustomUserDetailsService customUserDetailsService;
+    @Value("${private.key}")
+    private String privateKeyPem;
+
+    private final JwtAuthEntryPoint jwtAuthEntryPoint;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthEntryPoint jwtAuthEntryPoint) {
@@ -65,42 +76,65 @@ public class SecurityConfig {
         return http
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .exceptionHandling( exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint))
-                .authorizeHttpRequests( auth -> auth
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint))
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer( oauth2 -> oauth2
+                .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(Customizer.withDefaults()))
                 .build();
     }
 
     @Bean
-    public JWKSource<SecurityContext> jwkSource() {
-        rsaKey = Jwks.generateRsa();
-        JWKSet jwkSet = new JWKSet(rsaKey);
-        return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
+    public JwtEncoder jwtEncoder() throws Exception {
+        if (privateKeyPem == null) {
+            throw new IllegalArgumentException("private.key property is not set");
+        }
+        System.out.println("PRIVATE_KEY: " + privateKeyPem);
+
+        String privateKeyContent = privateKeyPem
+                .replaceAll("\\n", "")
+                .replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "");
+        byte[] keyBytes = Base64.getDecoder().decode(privateKeyContent);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
+        RSAPrivateKey privateKey = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(keySpec);
+
+        // Load the public key from JWKS URL
+        String jwksUrl = "https://raw.githubusercontent.com/laurakrajnak/jwks/main/jwks.json";
+        DefaultResourceRetriever resourceRetriever = new DefaultResourceRetriever();
+        RemoteJWKSet<SecurityContext> jwkSet = new RemoteJWKSet<>(new URL(jwksUrl), resourceRetriever);
+
+        // Use a JWKSelector to retrieve the RSAKey from the JWKS
+        RSAKey rsaKey = (RSAKey) jwkSet.get(new JWKSelector(new com.nimbusds.jose.jwk.JWKMatcher.Builder().build()), null).get(0);
+        RSAPublicKey publicKey = rsaKey.toRSAPublicKey();
+
+        // Create RSAKey with both private and public keys
+        RSAKey rsaJWK = new RSAKey.Builder(publicKey)
+                .privateKey(privateKey)
+                .keyID(rsaKey.getKeyID())
+                .build();
+
+        JWKSource<SecurityContext> jwkSource = new ImmutableJWKSet<>(new JWKSet(rsaJWK));
+        return new NimbusJwtEncoder(jwkSource);
     }
 
     @Bean
-    JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwks) {
-        return new NimbusJwtEncoder(jwks);
-    }
-
-    @Bean
-    JwtDecoder jwtDecoder() throws JOSEException {
-         return NimbusJwtDecoder.withPublicKey(rsaKey.toRSAPublicKey()).build();
+    public JwtDecoder jwtDecoder() throws MalformedURLException {
+        String jwksUrl = "https://raw.githubusercontent.com/laurakrajnak/jwks/main/jwks.json";
+        return NimbusJwtDecoder.withJwkSetUri(jwksUrl).build();
     }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-        configuration.setAllowedMethods(List.of("GET","POST"));
-        configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
+        configuration.setAllowedMethods(List.of("GET", "POST"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",configuration);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
