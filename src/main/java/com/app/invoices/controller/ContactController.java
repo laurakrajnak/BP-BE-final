@@ -23,6 +23,11 @@ public class ContactController {
         return new ResponseEntity<>(new OperationFinishedResponse(this.service.createContact(body).getId()), HttpStatus.CREATED);
     }
 
+//    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity createContact(@RequestBody Contact body) {
+//        return new ResponseEntity<>(new OperationFinishedResponse(this.service.createContact(body).getId()), HttpStatus.CREATED);
+//    }
+
     @GetMapping(value = "/account/{accountId}/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ContactResponse> getContacts(@PathVariable Long accountId) {
         List<Contact> contacts = this.service.getListOfAllContacts(accountId);

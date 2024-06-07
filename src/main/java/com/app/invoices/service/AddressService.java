@@ -1,16 +1,50 @@
 package com.app.invoices.service;
 
+import com.app.invoices.controller.request.CreateAddressRequest;
 import com.app.invoices.entities.*;
+import com.app.invoices.exception.ResourceNotFoundException;
+import com.app.invoices.repository.AccountRepository;
 import com.app.invoices.repository.AddressRepository;
+import com.app.invoices.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AddressService {
 
     @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
     private AddressRepository repository;
 
-    public Address createAddress(Address address) { return this.repository.save(address); }
+    @Autowired
+    private AccountRepository accountRepository;
+
+//    public Address createAddress(CreateAddressRequest address, Authentication auth) {
+//        Long userId = jwtUtil.extractUserId(auth); // TO DO
+//        return this.repository.save(address); }
+
+    public Address createAddress(CreateAddressRequest addressRequest, Authentication auth) {
+        //        Long userId = jwtUtil.extractUserId(auth); // TO DO
+        Account account = this.accountRepository.getReferenceById(addressRequest.getAccountId());
+        Address address = new Address(
+                addressRequest.getIdentifier(),
+                account,
+                addressRequest.getCountry(),
+                addressRequest.getCity(),
+                addressRequest.getPostalCode(),
+                addressRequest.getStreet(),
+                addressRequest.getHouseNumber());
+        return this.repository.save(address);
+    }
+
+    public Address updateAddress(Address address, Authentication auth) {
+        Long userId = jwtUtil.extractUserId(auth);
+        if (repository.findAddressById(address.getId(), userId) == null) {
+            throw new ResourceNotFoundException("Address not found with id " + address.getId());
+        }
+        return repository.save(address);
+    }
 }
 

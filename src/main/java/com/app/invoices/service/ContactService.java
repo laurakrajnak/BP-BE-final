@@ -24,16 +24,10 @@ public class ContactService {
 
     public Contact createContact(CreateContactRequest contactRequest) {
         Account account = this.accountRepository.getReferenceById(contactRequest.getAccountId());
-        Address address = new Address(
-                account,
-                contactRequest.getCountry(),
-                contactRequest.getCity(),
-                contactRequest.getPostalCode(),
-                contactRequest.getStreet(),
-                contactRequest.getHouseNumber());
-        this.addressRepository.save(address);
+        Address address = this.addressRepository.findAddressByIdentifier(contactRequest.getAddressIdentifier());
 
         Contact contact = new Contact(
+                contactRequest.getIdentifier(),
                 account,
                 contactRequest.getName(),
                 address,

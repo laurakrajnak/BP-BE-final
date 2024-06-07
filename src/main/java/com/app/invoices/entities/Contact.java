@@ -16,6 +16,8 @@ public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String identifier;
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account accountId;
@@ -36,6 +38,7 @@ public class Contact {
 
     public Contact(Contact oldContact) {
         this.id = null;
+        this.identifier = oldContact.getIdentifier();
         this.accountId = oldContact.getAccountId();
         this.name = oldContact.getName();
         this.addressId = oldContact.getAddressId();
@@ -45,7 +48,8 @@ public class Contact {
         this.accountType = oldContact.getAccountType();
     }
 
-    public Contact(Account account, String name, Address addressId, String registrationalId, String taxId, String vatId, AccountType accountType) {
+    public Contact(String identifier, Account account, String name, Address addressId, String registrationalId, String taxId, String vatId, AccountType accountType) {
+        this.identifier = identifier;
         this.accountId = account;
         this.name = name;
         this.addressId = addressId;
