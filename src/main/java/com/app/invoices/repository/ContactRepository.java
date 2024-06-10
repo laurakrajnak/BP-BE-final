@@ -16,6 +16,8 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
 
     List<Contact> findByAccountId(Account accountId);
 
+    Contact findAddressByIdentifier(String identifier);
+
     @Override
     default List findAll(Example example) {
         return Collections.emptyList();

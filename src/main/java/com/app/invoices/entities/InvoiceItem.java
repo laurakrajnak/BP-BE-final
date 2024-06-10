@@ -3,18 +3,17 @@ package com.app.invoices.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.ZonedDateTime;
 
 @Data
 @Getter
 @Setter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "invoice_item")
 public class InvoiceItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "invoice_id")
@@ -24,11 +23,14 @@ public class InvoiceItem {
     @JoinColumn(name = "account_id")
     private Account accountId;
     private String name;
-    private String price;
-    private String quantity;
-    @Column(name = "created_at")
-    private ZonedDateTime createdAt;
+    private Double price;
+    private int quantity;
 
-    @Column(name = "updated_at")
-    private ZonedDateTime updatedAt;
+    public InvoiceItem(Invoice invoiceId, Account accountId, String name, Double price, Integer quantity) {
+        this.invoiceId = invoiceId;
+        this.accountId = accountId;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
 }

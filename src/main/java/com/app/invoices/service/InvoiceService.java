@@ -1,7 +1,9 @@
 package com.app.invoices.service;
 
+import com.app.invoices.controller.request.CreateInvoiceRequest;
 import com.app.invoices.entities.*;
 import com.app.invoices.repository.AccountRepository;
+import com.app.invoices.repository.ContactRepository;
 import com.app.invoices.repository.InvoiceRepository;
 import com.app.invoices.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,31 @@ public class InvoiceService {
     private AccountRepository accountRepository;
 
     @Autowired
+    private ContactRepository contactRepository;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
-    public Invoice createInvoice(Invoice invoice) { return this.repository.save(invoice); }
+//    public Invoice createInvoice(Invoice invoice) { return this.repository.save(invoice); }
 
+    public Invoice createInvoice(CreateInvoiceRequest invoiceRequest) {
+        Account account = this.accountRepository.getReferenceById(invoiceRequest.getAccountId());
+        Contact issuer = this.contactRepository.getReferenceById(invoiceRequest.getIssuerId());
+        Contact recipient = this.contactRepository.findAddressByIdentifier(invoiceRequest.getRecipientId());
+
+        Invoice invoice = new Invoice(
+                invoiceRequest.getIdentifier(),
+                invoiceRequest.getSerialNumber(),
+                account,
+                issuer,
+                recipient,
+                invoiceRequest.getDate(),
+                invoiceRequest.getPrice(),
+                invoiceRequest.getVat());
+        System.out.println("Invoice ID before save: " + invoice.getId());
+
+        return this.repository.save(invoice);
+    }
     public Invoice getInvoice(long id, Authentication auth) {
         Long userId = jwtUtil.extractUserId(auth);
         return this.repository.findInvoiceById(id, userId);

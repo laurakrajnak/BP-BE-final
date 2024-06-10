@@ -16,6 +16,7 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String identifier;
     private Long serialNumber;
     @ManyToOne
     @JoinColumn(name = "account_id")
@@ -29,9 +30,15 @@ public class Invoice {
     private ZonedDateTime date;
     private Double price;
     private Double vat;
-    @Column(name = "created_at")
-    private ZonedDateTime createdAt;
 
-    @Column(name = "updated_at")
-    private ZonedDateTime updatedAt;
+    public Invoice(String identifier, Long serialNumber, Account accountId, Contact issuerId, Contact recipientId, ZonedDateTime date, Double price, Double vat) {
+        this.identifier = identifier;
+        this.serialNumber = serialNumber;
+        this.accountId = accountId;
+        this.issuerId = issuerId;
+        this.recipientId = recipientId;
+        this.date = date;
+        this.price = price;
+        this.vat = vat;
+    }
 }

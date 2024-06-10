@@ -1,6 +1,7 @@
 package com.app.invoices.controller;
 
 import com.app.invoices.controller.exception.NotFoundException;
+import com.app.invoices.controller.request.CreateInvoiceRequest;
 import com.app.invoices.controller.response.InvoiceResponse;
 import com.app.invoices.controller.response.OperationFinishedResponse;
 import com.app.invoices.entities.*;
@@ -22,7 +23,7 @@ public class InvoiceController {
     private InvoiceService service;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createInvoice(@RequestBody Invoice body) {
+    public ResponseEntity createInvoice(@RequestBody CreateInvoiceRequest body) {
         return new ResponseEntity<>(new OperationFinishedResponse(this.service.createInvoice(body).getId()), HttpStatus.CREATED);
     }
 

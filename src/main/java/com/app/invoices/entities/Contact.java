@@ -16,7 +16,6 @@ public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String identifier;
     @ManyToOne
     @JoinColumn(name = "account_id")
