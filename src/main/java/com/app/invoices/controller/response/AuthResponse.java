@@ -2,15 +2,16 @@ package com.app.invoices.controller.response;
 
 import lombok.Getter;
 import lombok.Setter;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class AuthResponse {
     private String token;
-    private Long userId;
+    private UUID refreshToken;
 
-    public AuthResponse(String token, Long userId) {
+    public AuthResponse(String token, UUID refreshToken) {
         this.token = token;
-        this.userId = userId;
+        this.refreshToken = refreshToken;
     }
 }
