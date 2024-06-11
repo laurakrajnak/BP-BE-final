@@ -1,5 +1,6 @@
 package com.app.invoices.service;
 
+import com.app.invoices.controller.exception.NotFoundException;
 import com.app.invoices.controller.request.CreateInvoiceRequest;
 import com.app.invoices.entities.*;
 import com.app.invoices.repository.AccountRepository;
@@ -52,6 +53,16 @@ public class InvoiceService {
     public Invoice getInvoice(long id, Authentication auth) {
         Long userId = jwtUtil.extractUserId(auth);
         return this.repository.findInvoiceById(id, userId);
+    }
+
+    public void removeInvoiceFromAccount(Long id) {
+        Invoice invoice = this.repository.findInvoiceById(id);
+        if (invoice != null) {
+            invoice.setAccountId(null);
+            this.repository.save(invoice);
+        } else {
+            throw new NotFoundException("Invoice with given ID was not found.");
+        }
     }
 
     public List<Invoice> getListOfAllInvoices(Long accountId) {

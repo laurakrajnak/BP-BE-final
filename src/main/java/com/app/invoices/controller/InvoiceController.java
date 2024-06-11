@@ -7,7 +7,6 @@ import com.app.invoices.controller.response.OperationFinishedResponse;
 import com.app.invoices.entities.*;
 import com.app.invoices.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,10 +35,16 @@ public class InvoiceController {
         return new InvoiceResponse(invoice);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public void deleteInvoice(@PathVariable("id") long id, Authentication auth) throws ChangeSetPersister.NotFoundException {
-        this.service.deleteInvoice(id, auth);
+    @PatchMapping(value ="/{id}")
+    public ResponseEntity<?> updateContact(@PathVariable Long id) {
+        this.service.removeInvoiceFromAccount(id);
+        return ResponseEntity.ok().build();
     }
+
+//    @DeleteMapping(value = "/{id}")
+//    public void deleteInvoice(@PathVariable("id") long id, Authentication auth) throws ChangeSetPersister.NotFoundException {
+//        this.service.deleteInvoice(id, auth);
+//    }
 
     @GetMapping(value = "/account/{accountId}/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<InvoiceResponse> getInvoice(@PathVariable Long accountId) {

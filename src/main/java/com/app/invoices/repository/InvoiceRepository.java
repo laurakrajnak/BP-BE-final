@@ -15,6 +15,8 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
                     "AND a.user_id = :user_id", nativeQuery = true)
     Invoice findInvoiceById(@Param("id")Long id, @Param("user_id") Long userId);
 
+    Invoice findInvoiceById(Long id);
+
     Invoice findInvoiceByIdentifier(String identifier);
 
     @Override
