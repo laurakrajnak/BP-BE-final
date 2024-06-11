@@ -27,7 +27,7 @@ public class TokenService {
 
     @Autowired
     private UserRepository userRepository;
-    private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
+    private static final Logger logger = LoggerFactory.getLogger(TokenService.class);
 
 
     public TokenService(JwtEncoder encoder) {
@@ -77,14 +77,18 @@ public class TokenService {
     public UUID validateAndGenerateRefreshToken(Long userId, UUID token) {
         logger.info("validateAndGenerateRefreshToken");
         RefreshToken existingToken = repository.findRefreshTokenByIdentifier(userId, token);
-        logger.info("identifier: {}, existingTokenId: {}, exp {}, creation {}", token, existingToken.getIdentifier(), existingToken.getExpiresAt(), existingToken.getCreatedAt());
+        if (existingToken != null) {
+            logger.info("identifier: {}, existingTokenId: {}, exp {}, creation {}", token, existingToken.getIdentifier(), existingToken.getExpiresAt(), existingToken.getCreatedAt());
 
-        if (existingToken == null || (existingToken.getExpiresAt().isBefore(ZonedDateTime.now()))) {
-            throw new NotFoundException("Refresh token is not valid or has expired.");
+            if (existingToken == null || (existingToken.getExpiresAt().isBefore(ZonedDateTime.now()))) {
+                throw new NotFoundException("Refresh token is not valid or has expired.");
+            }
+            repository.delete(existingToken);
+
+            return generateRefreshToken(userId);
+
         }
-        repository.delete(existingToken);
-
-        return generateRefreshToken(userId);
+        return null;
     }
 
     public UUID generateRefreshToken(Long userId) {

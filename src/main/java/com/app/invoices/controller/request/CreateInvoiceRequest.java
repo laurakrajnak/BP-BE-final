@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,7 +18,7 @@ public class CreateInvoiceRequest {
     @JsonProperty("issuer_id")
     private Long issuerId;
     @JsonProperty("recipient_id")
-    private String recipientId;
+    private UUID recipientId;
     private ZonedDateTime date;
     private Double price;
     private Double vat;

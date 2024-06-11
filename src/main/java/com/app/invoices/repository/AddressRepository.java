@@ -21,6 +21,8 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
             "AND a.user_id = :user_id", nativeQuery = true)
     Address findAddressById(@Param("id")Long id, @Param("user_id") Long userId);
 
+    Address findAddressById(Long id);
+
     Address findAddressByIdentifier(String identifier);
     @Override
     public default List findAll(Example example) {

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 @Data
 @Getter
@@ -16,7 +17,7 @@ public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String identifier;
+    private UUID identifier;
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account accountId;
@@ -47,7 +48,7 @@ public class Contact {
         this.accountType = oldContact.getAccountType();
     }
 
-    public Contact(String identifier, Account account, String name, Address addressId, String registrationalId, String taxId, String vatId, AccountType accountType) {
+    public Contact(UUID identifier, Account account, String name, Address addressId, String registrationalId, String taxId, String vatId, AccountType accountType) {
         this.identifier = identifier;
         this.accountId = account;
         this.name = name;

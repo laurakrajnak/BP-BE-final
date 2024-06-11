@@ -28,9 +28,6 @@ public class Expense {
   @Column(name = "created_at")
   private ZonedDateTime createdAt;
 
-  @Column(name = "updated_at")
-  private ZonedDateTime updatedAt;
-
   public Expense(Account account, String description, Double price) {
     this.accountId = account;
     this.description = description;

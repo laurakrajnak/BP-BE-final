@@ -23,6 +23,17 @@ public class ContactController {
         return new ResponseEntity<>(new OperationFinishedResponse(this.service.createContact(body).getId()), HttpStatus.CREATED);
     }
 
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ContactResponse getContact(@PathVariable Long id) {
+        return new ContactResponse(this.service.getContactDetail(id));
+    }
+
+    @PatchMapping(value ="/{id}")
+    public ResponseEntity<?> updateContact(@PathVariable Long id) {
+        this.service.removeContactFromAccount(id);
+        return ResponseEntity.ok().build();
+    }
+
 //    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 //    public ResponseEntity createContact(@RequestBody Contact body) {
 //        return new ResponseEntity<>(new OperationFinishedResponse(this.service.createContact(body).getId()), HttpStatus.CREATED);
@@ -35,11 +46,6 @@ public class ContactController {
         return contacts.stream()
                 .map(ContactResponse::new)
                 .toList();
-    }
-
-  @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ContactResponse getContact(@PathVariable Long id) {
-        return new ContactResponse(this.service.getContactDetail(id));
     }
 
 //    @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

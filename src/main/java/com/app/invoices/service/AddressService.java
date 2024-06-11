@@ -1,5 +1,6 @@
 package com.app.invoices.service;
 
+import com.app.invoices.controller.exception.NotFoundException;
 import com.app.invoices.controller.request.CreateAddressRequest;
 import com.app.invoices.entities.*;
 import com.app.invoices.exception.ResourceNotFoundException;
@@ -37,6 +38,16 @@ public class AddressService {
                 addressRequest.getStreet(),
                 addressRequest.getHouseNumber());
         return this.repository.save(address);
+    }
+
+    public void removeAddressFromAccount(Long id) {
+        Address address = this.repository.findAddressById(id);
+        if (address != null) {
+            address.setAccountId(null);
+            this.repository.save(address);
+        } else {
+            throw new NotFoundException("Address with given ID was not found.");
+        }
     }
 
     public Address updateAddress(Address address, Authentication auth) {

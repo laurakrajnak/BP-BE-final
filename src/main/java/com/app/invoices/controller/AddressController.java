@@ -22,6 +22,12 @@ public class AddressController {
         return new ResponseEntity<>(new OperationFinishedResponse(this.service.createAddress(body, authentication).getId()), HttpStatus.CREATED);
     }
 
+    @PatchMapping(value ="/{id}")
+    public ResponseEntity<?> updateContact(@PathVariable Long id) {
+        this.service.removeAddressFromAccount(id);
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity updateAddress(@PathVariable Long id, @RequestBody Address body, Authentication authentication) {
         body.setId(id);  // Ensure the ID is set correctly

@@ -33,7 +33,8 @@ public class InvoiceService {
     public Invoice createInvoice(CreateInvoiceRequest invoiceRequest) {
         Account account = this.accountRepository.getReferenceById(invoiceRequest.getAccountId());
         Contact issuer = this.contactRepository.getReferenceById(invoiceRequest.getIssuerId());
-        Contact recipient = this.contactRepository.findAddressByIdentifier(invoiceRequest.getRecipientId());
+    System.out.println("recipient identifier" + invoiceRequest.getRecipientId());
+        Contact recipient = this.contactRepository.findContactByIdentifier(invoiceRequest.getRecipientId());
 
         Invoice invoice = new Invoice(
                 invoiceRequest.getIdentifier(),

@@ -3,12 +3,13 @@ package com.app.invoices.controller.request;
 import com.app.invoices.entities.AccountType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class CreateContactRequest {
     @JsonProperty("identifier")
-    private String identifier;
+    private UUID identifier;
     @JsonProperty("account_id")
     private Long accountId;
     @JsonProperty("name")
