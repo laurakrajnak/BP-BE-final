@@ -1,5 +1,7 @@
 package com.app.invoices.controller;
 
+import com.app.invoices.controller.request.LoginRequest;
+import com.app.invoices.controller.request.RefreshTokenRequest;
 import com.app.invoices.controller.response.AuthResponse;
 import com.app.invoices.security.CustomUserDetails;
 import com.app.invoices.service.AuthService;
@@ -46,12 +48,15 @@ public class AuthController {
         this.tokenService = tokenService;
     }
 
-    @GetMapping(value = "/login")
-    public ResponseEntity<AuthResponse> loginUser(@RequestParam String email, @RequestParam String password) {
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AuthResponse> loginUser(@RequestBody LoginRequest body) {
+        String email = body.getEmail();
+        String password = body.getPassword();
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password));
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             Long userId = userDetails.getUserId();
             logger.info(userId.toString());
@@ -81,8 +86,10 @@ public class AuthController {
         }
     }
 
-    @GetMapping(value = "/refresh")
-    public ResponseEntity<AuthResponse> refreshToken(@RequestParam Long userId, @RequestParam UUID refreshToken) {
+    @PostMapping(value = "/refresh", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AuthResponse> refreshToken(@RequestBody RefreshTokenRequest body) {
+        Long userId = body.getUserId();
+        UUID refreshToken = body.getRefreshToken();
         try {
             UUID newRefreshToken = tokenService.validateAndGenerateRefreshToken(userId, refreshToken);
             if (newRefreshToken != null) {
