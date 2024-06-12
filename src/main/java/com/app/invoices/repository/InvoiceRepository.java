@@ -20,7 +20,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     Invoice findInvoiceByIdentifier(String identifier);
 
     @Query(value = "SELECT COALESCE(MAX(i.serial_number), 0) FROM invoice i WHERE i.account_id = :accountId", nativeQuery = true)
-    int getNextSerialNumber(@Param("accountId") Long accountId);
+    Long getNextSerialNumber(@Param("accountId") Long accountId);
 
     @Override
     default void flush() { }

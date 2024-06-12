@@ -71,12 +71,12 @@ public class InvoiceService {
         Invoice invoice = repository.findById(invoiceId).orElseThrow(() -> new NotFoundException("Invoice not found"));
         Account account = invoice.getAccountId();
 
-        String nextSerialNumber = String.valueOf(repository.getNextSerialNumber(account.getId()));
-        if (!nextSerialNumber.equals("0")) {
+        String nextSerialNumber = String.valueOf(repository.getNextSerialNumber(account.getId()) + 1);
+        if (!nextSerialNumber.equals("1")) {
             nextSerialNumber = nextSerialNumber.substring(5);
         }
         LocalDate now = LocalDate.now();
-        String formattedSerialNumber = String.format("%04d%02d%s", now.getYear(), now.getMonthValue(), nextSerialNumber + 1);
+        String formattedSerialNumber = String.format("%04d%02d%s", now.getYear(), now.getMonthValue(), nextSerialNumber);
 
         invoice.setSerialNumber(Long.parseLong(formattedSerialNumber));
         repository.save(invoice);
