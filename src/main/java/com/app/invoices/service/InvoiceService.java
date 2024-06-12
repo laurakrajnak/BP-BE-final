@@ -45,6 +45,7 @@ public class InvoiceService {
                 issuer,
                 recipient,
                 invoiceRequest.getCreatedAt(),
+                invoiceRequest.getDate(),
                 invoiceRequest.getPrice(),
                 invoiceRequest.getVat());
         System.out.println("Invoice ID before save: " + invoice.getId());

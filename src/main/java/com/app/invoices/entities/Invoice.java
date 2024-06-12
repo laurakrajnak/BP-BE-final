@@ -28,16 +28,18 @@ public class Invoice {
     @JoinColumn(name = "recipient_id")
     private Contact recipientId;
     private ZonedDateTime createdAt;
+    private ZonedDateTime date;
     private Double price;
     private Double vat;
 
-    public Invoice(String identifier, Long serialNumber, Account accountId, Contact issuerId, Contact recipientId, ZonedDateTime createdAt, Double price, Double vat) {
+    public Invoice(String identifier, Long serialNumber, Account accountId, Contact issuerId, Contact recipientId, ZonedDateTime createdAt, ZonedDateTime date, Double price, Double vat) {
         this.identifier = identifier;
         this.serialNumber = serialNumber;
         this.accountId = accountId;
         this.issuerId = issuerId;
         this.recipientId = recipientId;
         this.createdAt = createdAt;
+        this.date = date;
         this.price = price;
         this.vat = vat;
     }
