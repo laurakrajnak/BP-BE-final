@@ -10,6 +10,8 @@ import java.util.List;
 import com.app.invoices.service.AccountService;
 import com.app.invoices.service.ExpenseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
@@ -27,35 +29,47 @@ public class ExpenseController {
     @Autowired
     private AccountService accountService;
 
+    private static final Logger logger = LoggerFactory.getLogger(ExpenseController.class);
+
+
     // TO DO !!! divide this into service and repository
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OperationFinishedResponse> createExpense(
             @RequestPart("expense") String expenseJson,
             @RequestPart("photo") MultipartFile photo) {
 
+        logger.info("Received request to create expense");
+
         ObjectMapper objectMapper = new ObjectMapper();
         ExpenseDTO expenseDTO;
         try {
+            logger.debug("Parsing expense JSON");
             expenseDTO = objectMapper.readValue(expenseJson, ExpenseDTO.class);
         } catch (IOException e) {
+            logger.error("Failed to parse expense JSON", e);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         Account account = accountService.getAccountById(expenseDTO.getAccountId());
         if (account == null) {
+            logger.error("Account not found for ID: {}", expenseDTO.getAccountId());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         Expense expense = new Expense(account, expenseDTO.getDescription(), expenseDTO.getPrice());
 
         try {
+            logger.debug("Processing photo");
             byte[] photoBytes = photo.getBytes();
             expense.setPhoto(photoBytes);
         } catch (IOException e) {
+            logger.error("Failed to process photo", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         Expense savedExpense = service.createExpense(expense);
+        logger.info("Expense created with ID: {}", savedExpense.getId());
+
         return new ResponseEntity<>(new OperationFinishedResponse(savedExpense.getId()), HttpStatus.CREATED);
     }
 
