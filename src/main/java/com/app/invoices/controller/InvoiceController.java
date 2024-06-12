@@ -36,8 +36,14 @@ public class InvoiceController {
     }
 
     @PatchMapping(value ="/{id}")
-    public ResponseEntity<?> updateContact(@PathVariable Long id) {
+    public ResponseEntity<?> updateInvoice(@PathVariable Long id) {
         this.service.removeInvoiceFromAccount(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping(value = "/issue/{id}")
+    public ResponseEntity<?> issueInvoice(@PathVariable Long id) {
+        service.issueInvoice(id);
         return ResponseEntity.ok().build();
     }
 

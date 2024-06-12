@@ -12,6 +12,7 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -64,6 +65,22 @@ public class InvoiceService {
             throw new NotFoundException("Invoice with given ID was not found.");
         }
     }
+
+    public void issueInvoice(Long invoiceId) {
+        Invoice invoice = repository.findById(invoiceId).orElseThrow(() -> new NotFoundException("Invoice not found"));
+        Account account = invoice.getAccountId();
+
+        String nextSerialNumber = String.valueOf(repository.getNextSerialNumber(account.getId()));
+        if (!nextSerialNumber.equals("0")) {
+            nextSerialNumber = nextSerialNumber.substring(5);
+        }
+        LocalDate now = LocalDate.now();
+        String formattedSerialNumber = String.format("%04d%02d%s", now.getYear(), now.getMonthValue(), nextSerialNumber + 1);
+
+        invoice.setSerialNumber(Long.parseLong(formattedSerialNumber));
+        repository.save(invoice);
+    }
+
 
     public List<Invoice> getListOfAllInvoices(Long accountId) {
         Account account = this.accountRepository.getReferenceById(accountId);
