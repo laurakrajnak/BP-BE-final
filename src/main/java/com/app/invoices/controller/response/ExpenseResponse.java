@@ -12,11 +12,11 @@ public class ExpenseResponse {
     @JsonProperty("description")
     private String description;
 
-    @JsonProperty("date")
-    private ZonedDateTime date;
+    @JsonProperty("createdAt")
+    private ZonedDateTime createdAt;
 
     public ExpenseResponse(Expense expense) {
         this.description = expense.getDescription();
-        this.date = expense.getCreatedAt();
+        this.createdAt = expense.getCreatedAt();
     }
 }

@@ -20,14 +20,14 @@ public class InvoiceResponse {
     @JsonProperty("recipient")
     private ContactResponse recipient;
 
-    @JsonProperty("date")
-    private ZonedDateTime date;
+    @JsonProperty("createdAt")
+    private ZonedDateTime createdAt;
 
     public InvoiceResponse(Invoice invoice) {
         this.id = invoice.getId();
         this.serialNumber = invoice.getSerialNumber();
         this.issuer = new ContactResponse(invoice.getIssuerId());
         this.recipient = new ContactResponse(invoice.getRecipientId());
-        this.date = invoice.getDate();
+        this.createdAt = invoice.getCreatedAt();
     }
 }

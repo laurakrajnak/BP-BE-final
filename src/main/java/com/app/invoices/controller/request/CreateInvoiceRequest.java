@@ -19,7 +19,8 @@ public class CreateInvoiceRequest {
     private Long issuerId;
     @JsonProperty("recipient_id")
     private UUID recipientId;
-    private ZonedDateTime date;
+    @JsonProperty("created_at")
+    private ZonedDateTime createdAt;
     private Double price;
     private Double vat;
 }
