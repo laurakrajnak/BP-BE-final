@@ -10,7 +10,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class CreateInvoiceRequest {
-    private String identifier;
+    private String id;
     @JsonProperty("serial_number")
     private Long serialNumber;
     @JsonProperty("account_id")

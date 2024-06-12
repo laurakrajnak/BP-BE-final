@@ -39,7 +39,7 @@ public class InvoiceService {
         Contact recipient = this.contactRepository.findContactByIdentifier(invoiceRequest.getRecipientId());
 
         Invoice invoice = new Invoice(
-                invoiceRequest.getIdentifier(),
+                invoiceRequest.getId(),
                 invoiceRequest.getSerialNumber(),
                 account,
                 issuer,

@@ -30,6 +30,7 @@ public class ItemService {
                 itemRequest.getName(),
                 itemRequest.getPrice(),
                 itemRequest.getQuantity());
+        System.out.println("Invoice ID before save: " + invoice + " " + invoice.getId());
         System.out.println("InvoiceItem ID before save: " + item.getId());
 
         return this.repository.save(item);
