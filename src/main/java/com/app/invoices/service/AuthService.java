@@ -32,7 +32,6 @@ public class AuthService {
         User createdUser = new User();
         createdUser.setEmail(user.getEmail());
         createdUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        createdUser.setRoleId(1L);
         return this.userRepository.save(createdUser);
     }
 

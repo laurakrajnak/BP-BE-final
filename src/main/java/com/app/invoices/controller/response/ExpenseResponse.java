@@ -9,14 +9,19 @@ import lombok.Getter;
 public class ExpenseResponse {
 
     //TO DO use label
+    private Long id;
     @JsonProperty("description")
     private String description;
-
+    private double price;
     @JsonProperty("createdAt")
     private ZonedDateTime createdAt;
+    private byte[] photo;
 
     public ExpenseResponse(Expense expense) {
+        this.id = expense.getId();
         this.description = expense.getDescription();
         this.createdAt = expense.getCreatedAt();
+        this.price = expense.getPrice();
+        this.photo = expense.getPhoto();
     }
 }

@@ -74,8 +74,8 @@ public class ExpenseController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Expense getExpense(@PathVariable("id") long id) throws ChangeSetPersister.NotFoundException {
-        return this.service.getExpense(id);
+    public ExpenseResponse getExpense(@PathVariable("id") long id) throws ChangeSetPersister.NotFoundException {
+        return new ExpenseResponse(this.service.getExpense(id));
     }
 
     @DeleteMapping(value = "/{id}")
