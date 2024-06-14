@@ -73,7 +73,7 @@ public class InvoiceService {
 
         String nextSerialNumber = String.valueOf(repository.getNextSerialNumber(account.getId()) + 1);
         if (!nextSerialNumber.equals("1")) {
-            nextSerialNumber = nextSerialNumber.substring(5);
+            nextSerialNumber = nextSerialNumber.substring(6);
         }
         LocalDate now = LocalDate.now();
         String formattedSerialNumber = String.format("%04d%02d%s", now.getYear(), now.getMonthValue(), nextSerialNumber);
