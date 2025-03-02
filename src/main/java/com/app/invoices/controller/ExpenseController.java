@@ -32,7 +32,6 @@ public class ExpenseController {
     private static final Logger logger = LoggerFactory.getLogger(ExpenseController.class);
 
 
-    // TO DO !!! divide this into service and repository
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OperationFinishedResponse> createExpense(
             @RequestPart("expense") String expenseJson,

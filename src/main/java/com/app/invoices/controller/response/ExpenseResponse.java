@@ -8,7 +8,6 @@ import lombok.Getter;
 @Getter
 public class ExpenseResponse {
 
-    //TO DO use label
     private Long id;
     @JsonProperty("description")
     private String description;

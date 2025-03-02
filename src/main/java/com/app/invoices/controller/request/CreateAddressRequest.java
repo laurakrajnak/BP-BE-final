@@ -20,9 +20,5 @@ public class CreateAddressRequest {
     private String postalCode;
     @JsonProperty("street")
     private String street;
-//    private String country;
-//    private String city;
-//    private String postalCode;
-//    private String street;
-//    private Integer houseNumber;
+
 }

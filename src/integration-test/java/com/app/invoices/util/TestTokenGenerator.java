@@ -2,8 +2,7 @@ package com.app.invoices.util;
 
 import io.jsonwebtoken.Jwts;
 
-//dont know why is this here, its from previous try to implement authentication
-// TO DO remove if not used
+
 public class TestTokenGenerator {
     private TestTokenGenerator() {
     }

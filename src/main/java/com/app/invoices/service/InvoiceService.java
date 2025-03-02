@@ -30,7 +30,6 @@ public class InvoiceService {
     @Autowired
     private JwtUtil jwtUtil;
 
-//    public Invoice createInvoice(Invoice invoice) { return this.repository.save(invoice); }
 
     public Invoice createInvoice(CreateInvoiceRequest invoiceRequest) {
         Account account = this.accountRepository.getReferenceById(invoiceRequest.getAccountId());
@@ -93,48 +92,18 @@ public class InvoiceService {
     }
 
     public Invoice addProductToInvoice(long id, Invoice body) {
-        //Invoice invoice = this.repository.findInvoiceById(id);
-//        Product product = this.productService.getProduct(body.getProductId());
-//        if (product == null || invoice == null) {
-//            throw new NotFoundException();
-//        }
-//        if (invoice.isPayed() || body.getAmount() > product.getAmount()) {
-//            throw new IllegalOperationException();
-//        }
-//        ProductInInvoice productInInvoice = new ProductInInvoice(body);
-//        if (this.containsProductId(invoice.getShoppingList(), body.getProductId())) {
-//            productInInvoice.increaseAmount(body.getAmount());
-//        } else {
-//            invoice.getShoppingList().add(productInInvoice);
-//        }
-//        product.decreaseAmount(body.getAmount());
-//        this.productInInvoiceRepository.save(productInInvoice);
-        //return this.repository.save(invoice);
+
         return null;
     }
 
     public boolean containsProductId(List<Invoice> productList, Long productId) {
-//        for (ProductInInvoice productInInvoice : productList) {
-//            Long InvoiceProductId = productInInvoice.getProductId();
-//            if (InvoiceProductId != null && InvoiceProductId.equals(productId)) {
-//                return true;
-//            }
-//        }
+
         return false;
     }
 
     public double payInvoice(long id) throws ChangeSetPersister.NotFoundException {
         double price = 0;
-//        if (this.getInvoice(id) == null) {
-//            throw new NotFoundException();
-//        } else if (this.getInvoice(id).isPayed()) {
-//            throw new IllegalOperationException();
-//        }
-//        for (ProductInInvoice product : this.repository.getOne(id).getShoppingList()) {
-//            Product productForPrice = this.productService.getProduct(product.getProductId());
-//            price += (productForPrice.getPrice() * product.getAmount());
-//        }
-//        this.getInvoice(id).setPayed(true);
+
         return price;
     }
 }

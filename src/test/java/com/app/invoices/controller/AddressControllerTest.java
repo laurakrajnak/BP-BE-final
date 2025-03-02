@@ -17,8 +17,8 @@ public class AddressControllerTest {
     @Mock
     private AddressService addressService;
 
-    @InjectMocks
-    private AddressController addressController;
+//    @InjectMocks
+//    private AddressController addressController;
 
 //    @Test
 //    public void testCreateAddress() {

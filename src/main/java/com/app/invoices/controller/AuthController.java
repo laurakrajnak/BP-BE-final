@@ -34,7 +34,6 @@ public class AuthController {
     private TokenService tokenService;
     private final AuthenticationManager authenticationManager;
 
-    // TO DO - delete if not used
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -107,17 +106,4 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-
-
-    //REMOVE
-    // TO DO secure this as it is public because of /auth
-//    @PostMapping(value = "/role", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity createRole(@RequestBody Role body) {
-//        try {
-//            return new ResponseEntity<>(new OperationFinishedResponse(this.service.createRole(body).getId()), HttpStatus.CREATED);
-//        } catch (IllegalArgumentException e) {
-//            logger.error("Failed to register user with email {}", body.getName(), e);
-//            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-//        }
-//    }
 }

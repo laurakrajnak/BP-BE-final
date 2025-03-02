@@ -11,15 +11,6 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
         return findById(id);
     }
 
-//    @Override
-//    default List findAll(Example example) {
-//        return Collections.emptyList();
-//    }
-
-//    @Override
-//    default List findAll(Example example, Sort sort) {
-//        return Collections.emptyList();
-//    }
 
     @Override
     default void flush() {

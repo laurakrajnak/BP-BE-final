@@ -39,7 +39,8 @@ public class ContactService {
                 contactRequest.getRegistrationalId(),
                 contactRequest.getTaxId(),
                 contactRequest.getVatId(),
-                contactRequest.getAccountType());
+                contactRequest.getAccountType(),
+                false);
         return this.repository.save(contact);
     }
 
@@ -62,6 +63,5 @@ public class ContactService {
         return repository.getReferenceById(id);
     }
 
-//    public Contact updateContact(Contact contact) { return this.repository.updateContact(contact); }
 }
 

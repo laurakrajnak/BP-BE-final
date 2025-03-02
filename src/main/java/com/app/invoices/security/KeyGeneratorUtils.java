@@ -14,8 +14,7 @@ final class KeyGeneratorUtils {
 
     private KeyGeneratorUtils() {}
 
-    // TO DO - check, if this is used somewhere
-    // if yes - add it also into papers
+
     static KeyPair generateRsaKey() {
         KeyPair keyPair;
         try {

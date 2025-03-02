@@ -108,7 +108,7 @@ class InvoiceControllerIT {
         invoice.setAccountId(new Account());
         invoice.setIssuerId(createMockContact());
         invoice.setRecipientId(createMockContact());
-        invoice.setDate(ZonedDateTime.now());
+        invoice.setCreatedAt(ZonedDateTime.now());
         invoice.setPrice(100.0);
         invoice.setVat(20.0);
         return invoice;

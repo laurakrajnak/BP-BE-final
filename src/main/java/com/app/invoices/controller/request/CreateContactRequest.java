@@ -24,4 +24,5 @@ public class CreateContactRequest {
     private AccountType accountType;
     @JsonProperty("address_id")
     private String addressIdentifier;
+
 }

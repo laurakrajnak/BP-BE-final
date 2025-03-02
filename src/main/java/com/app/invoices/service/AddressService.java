@@ -22,12 +22,9 @@ public class AddressService {
     @Autowired
     private AccountRepository accountRepository;
 
-//    public Address createAddress(CreateAddressRequest address, Authentication auth) {
-//        Long userId = jwtUtil.extractUserId(auth); // TO DO
-//        return this.repository.save(address); }
+
 
     public Address createAddress(CreateAddressRequest addressRequest, Authentication auth) {
-        //        Long userId = jwtUtil.extractUserId(auth); // TO DO
         Account account = this.accountRepository.getReferenceById(addressRequest.getAccountId());
         Address address = new Address(
                 addressRequest.getIdentifier(),

@@ -48,7 +48,7 @@ public class Contact {
         this.accountType = oldContact.getAccountType();
     }
 
-    public Contact(UUID identifier, Account account, String name, Address addressId, String registrationalId, String taxId, String vatId, AccountType accountType) {
+    public Contact(UUID identifier, Account account, String name, Address addressId, String registrationalId, String taxId, String vatId, AccountType accountType, boolean isDeleted) {
         this.identifier = identifier;
         this.accountId = account;
         this.name = name;

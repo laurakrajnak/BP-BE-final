@@ -19,7 +19,7 @@ public class Address {
 
     private String identifier;
 
-    @ManyToOne // TO DO - chcem tu toto mat?
+    @ManyToOne
     @JoinColumn(name = "account_id")
     private Account accountId;
     private String country;

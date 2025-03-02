@@ -47,10 +47,6 @@ public class InvoiceController {
         return ResponseEntity.ok().build();
     }
 
-//    @DeleteMapping(value = "/{id}")
-//    public void deleteInvoice(@PathVariable("id") long id, Authentication auth) throws ChangeSetPersister.NotFoundException {
-//        this.service.deleteInvoice(id, auth);
-//    }
 
     @GetMapping(value = "/account/{accountId}/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<InvoiceResponse> getInvoice(@PathVariable Long accountId) {
