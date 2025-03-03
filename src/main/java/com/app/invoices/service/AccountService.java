@@ -29,7 +29,6 @@ public class AccountService {
 
     public Account getDefaultAccount(String email) {
         Optional<User> user = this.userRepository.findByEmail(email);
-//        logger.info("email {}", email);
         logger.info("user {}", user);
         return this.repository.findAllByUserId(user).get(0);
     }
