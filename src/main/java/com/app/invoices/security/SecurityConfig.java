@@ -12,7 +12,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+//import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,7 +31,6 @@ import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jose.util.DefaultResourceRetriever;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyFactory;
 import java.security.interfaces.RSAPrivateKey;
@@ -75,7 +74,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
+//                .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
@@ -92,7 +91,7 @@ public class SecurityConfig {
         if (privateKeyPem == null) {
             throw new IllegalArgumentException("private.key property is not set");
         }
-        System.out.println("PRIVATE_KEY: " + privateKeyPem);
+//        System.out.println("PRIVATE_KEY: " + privateKeyPem);
 
         String privateKeyContent = privateKeyPem
                 .replaceAll("\\n", "")
@@ -122,7 +121,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtDecoder jwtDecoder() throws MalformedURLException {
+    public JwtDecoder jwtDecoder() {
         String jwksUrl = "https://raw.githubusercontent.com/laurakrajnak/jwks/main/jwks.json";
         return NimbusJwtDecoder.withJwkSetUri(jwksUrl).build();
     }

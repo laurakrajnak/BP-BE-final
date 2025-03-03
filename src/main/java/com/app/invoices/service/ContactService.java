@@ -24,8 +24,6 @@ public class ContactService {
 
     @Autowired
     private AccountRepository accountRepository;
-    private static final Logger logger = LoggerFactory.getLogger(ContactService.class);
-
 
     public Contact createContact(CreateContactRequest contactRequest) {
         Account account = this.accountRepository.getReferenceById(contactRequest.getAccountId());
@@ -39,8 +37,7 @@ public class ContactService {
                 contactRequest.getRegistrationalId(),
                 contactRequest.getTaxId(),
                 contactRequest.getVatId(),
-                contactRequest.getAccountType(),
-                false);
+                contactRequest.getAccountType());
         return this.repository.save(contact);
     }
 
