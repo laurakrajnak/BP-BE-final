@@ -89,8 +89,6 @@ public class SecurityConfig {
         if (privateKeyPem == null) {
             throw new IllegalArgumentException("private.key property is not set");
         }
-//        System.out.println("PRIVATE_KEY: " + privateKeyPem);
-
         String privateKeyContent = privateKeyPem
                 .replaceAll("\\n", "")
                 .replace("-----BEGIN PRIVATE KEY-----", "")
